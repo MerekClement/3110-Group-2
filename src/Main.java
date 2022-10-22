@@ -15,12 +15,23 @@
 
 import Developer.Utils;
 
-public class Main {
-    // Instance variables
-    private static DictionaryManager _dictionaryManager;
-    private static boolean _devMode = false;
-    private static Utils _devUtils;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+public class Main {
+    // Managers and utils
+    private static DictionaryManager _dictionary;
+    private static BoardManager _board;
+    private static Utils _devUtils;
+    private static PlayerManager _playerManager;
+
+    // Game setup
+    private static int _gameHeight = 24; // <-- Character height
+    private static int _gameWidth = 24; // <-- Character wide
+    private static int _playerCount = 0;
+    private static boolean _devMode = false;
 
     /**
      * The following setup method is used to setup a game instance
@@ -30,10 +41,50 @@ public class Main {
         // Setup dev utils
         _devUtils = new Utils(_devMode);
 
+        // Setup the board manager
+        _board = new BoardManager(_devUtils);
+        _devUtils.printDev("Building gameboard as: " + _gameWidth + "x" + _gameHeight);
+        _board.buildBoard(_gameWidth, _gameHeight);
+
+        // Get players
+        ArrayList<Player> requestedPlayers = setupPlayers();
+        if (requestedPlayers.size() > 0){
+            _playerManager = new PlayerManager(requestedPlayers);
+        } else {
+            System.out.println("[ERROR] Cannot create a game of 0 players. Please give a number through -players=x");
+            System.exit(1);
+        }
+
+
         // Initalize the DictionaryManager
-        _dictionaryManager = new DictionaryManager(_devUtils);
-        _devUtils.printDev("DictionaryManager loaded with " + _dictionaryManager.getWords().size() + " words");
+        _dictionary = new DictionaryManager(_devUtils);
+        _devUtils.printDev("DictionaryManager loaded with " + _dictionary.getWords().size() + " words");
         return testSetup();
+    }
+
+    /**
+     * setupPlayers is for setting up the player manager with the requested players.
+     * @return {ArrayList<Player>} The arraylist containing the players
+     */
+    private static ArrayList<Player> setupPlayers(){
+        int created = 0;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<Player> players = new ArrayList<Player>();
+
+        // Reading data using readLine
+        while (_playerCount > created){
+            try {
+                System.out.println("Please input a name for Player " + (created + 1));
+                String name = reader.readLine();
+                players.add(new Player(name));
+                created++;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        _devUtils.printDev("Created list of " + (created) + " players");
+        return players;
     }
 
     /**
@@ -57,12 +108,26 @@ public class Main {
                 if (args[i].toString().equals("-dev")) {
                     _devMode = true;
                 }
+                if (args[i].toString().contains("-height=")) {
+                    args[i] = args[i].replace("-height=", "");
+                    _gameHeight = Integer.parseInt(args[i]);
+                }
+                if (args[i].toString().contains("-width=")) {
+                    args[i] = args[i].replace("-width=", "");
+                    _gameWidth = Integer.parseInt(args[i]);
+                }
+                if (args[i].toString().contains("-players=")) {
+                    args[i] = args[i].replace("-players=", "");
+                    _playerCount = Integer.parseInt(args[i]);
+                }
             }
         }
 
         // Setup game
         setup();
-        _devUtils.printDev(String.valueOf(_dictionaryManager.isWord("tEstg")));
-        _devUtils.printDev(String.valueOf(_dictionaryManager.isWord("tEst")));
+
+        // Just some test data
+        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
+        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
     }
 }
