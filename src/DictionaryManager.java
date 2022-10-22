@@ -1,5 +1,8 @@
 // The following class is for managing the dictionary and what is acceptable.
 
+import Developer.Utils;
+import jdk.jshell.execution.Util;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,12 +14,12 @@ public class DictionaryManager {
 
     // Instance variables
     private ArrayList _words = new ArrayList<String>();
-    private boolean _dev = false;
+    private Utils _dev;
 
     /**
      * The following method is used to load the dictionary into the program.
      */
-    public DictionaryManager(boolean dev) {
+    public DictionaryManager(Utils dev) {
         // Load the dictionary
         this._loadDictonary();
         this._dev = dev;
@@ -27,16 +30,9 @@ public class DictionaryManager {
      * This overloaded constructor is used to load a custom dictionary.
      * @param {ArrayList} - The array of words to load into the dictionary.
      */
-    public DictionaryManager(ArrayList<String> words, boolean dev) {
+    public DictionaryManager(ArrayList<String> words, Utils dev) {
         this._words = words;
         this._dev = dev;
-    }
-
-    private void _printDev(String message) {
-        if (this._dev) {
-            System.out.println("[DEV] " + message);
-        }
-
     }
 
     /**
@@ -75,7 +71,7 @@ public class DictionaryManager {
      */
     public boolean isWord(String word) {
         word = word.toLowerCase();
-        this._printDev("Searching for word: " + word + " in list of " + this._words.size());
+        this._dev.printDev("Searching for word: " + word + " in list of " + this._words.size());
         return this._words.contains(word);
     }
 }

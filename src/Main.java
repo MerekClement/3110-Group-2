@@ -13,29 +13,26 @@
 // Constants
 // PUT CONSTANTS HERE
 
+import Developer.Utils;
+
 public class Main {
     // Instance variables
     private static DictionaryManager _dictionaryManager;
     private static boolean _devMode = false;
+    private static Utils _devUtils;
 
-    /**
-     * The following method is to print a dev message
-     * @param message {String} - The message to print
-     */
-    private static void _printDev(String message) {
-        if (_devMode) {
-            System.out.println("[DEV] " + message);
-        }
-    }
 
     /**
      * The following setup method is used to setup a game instance
      * @return {boolean} - Returns true if the game was setup successfully
      */
     private static boolean setup() {
+        // Setup dev utils
+        _devUtils = new Utils(_devMode);
+
         // Initalize the DictionaryManager
-        _dictionaryManager = new DictionaryManager(_devMode);
-        _printDev("DictionaryManager loaded with " + _dictionaryManager.getWords().size() + " words");
+        _dictionaryManager = new DictionaryManager(_devUtils);
+        _devUtils.printDev("DictionaryManager loaded with " + _dictionaryManager.getWords().size() + " words");
         return testSetup();
     }
 
@@ -59,14 +56,13 @@ public class Main {
             for(int i = 0; i < args.length; ++i) {
                 if (args[i].toString().equals("-dev")) {
                     _devMode = true;
-                    _printDev("Dev mode enabled");
                 }
             }
         }
 
         // Setup game
         setup();
-        _printDev(String.valueOf(_dictionaryManager.isWord("tEstg")));
-        _printDev(String.valueOf(_dictionaryManager.isWord("tEst")));
+        _devUtils.printDev(String.valueOf(_dictionaryManager.isWord("tEstg")));
+        _devUtils.printDev(String.valueOf(_dictionaryManager.isWord("tEst")));
     }
 }
