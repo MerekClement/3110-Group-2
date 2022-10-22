@@ -15,7 +15,7 @@
 
 public class Main {
     // Instance variables
-    private static DictionaryManager _dictionaryManager = new DictionaryManager();
+    private static DictionaryManager _dictionaryManager;
     private static boolean _devMode = false;
 
     /**
@@ -34,14 +34,9 @@ public class Main {
      */
     private static boolean setup() {
         // Initalize the DictionaryManager
-        _dictionaryManager = new DictionaryManager();
+        _dictionaryManager = new DictionaryManager(_devMode);
         _printDev("DictionaryManager loaded with " + _dictionaryManager.getWords().size() + " words");
-
-        if (testSetup()){
-            return true;
-        } else {
-            return false;
-        }
+        return testSetup();
     }
 
     /**
@@ -49,7 +44,7 @@ public class Main {
      * @return
      */
     private static boolean testSetup() {
-        // TODO: Stubbed for now until testing.s
+        // TODO: Stubbed for now until testing.
         return true;
     }
 
@@ -61,7 +56,7 @@ public class Main {
     public static void main(String[] args) {
         // Runtime args
         if (args.length > 0) {
-            for (int i = 0; i < args.length; i++) {
+            for(int i = 0; i < args.length; ++i) {
                 if (args[i].toString().equals("-dev")) {
                     _devMode = true;
                     _printDev("Dev mode enabled");
@@ -71,5 +66,7 @@ public class Main {
 
         // Setup game
         setup();
+        _printDev(String.valueOf(_dictionaryManager.isWord("tEstg")));
+        _printDev(String.valueOf(_dictionaryManager.isWord("tEst")));
     }
 }

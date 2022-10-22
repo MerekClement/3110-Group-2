@@ -11,13 +11,15 @@ public class DictionaryManager {
 
     // Instance variables
     private ArrayList _words = new ArrayList<String>();
+    private boolean _dev = false;
 
     /**
      * The following method is used to load the dictionary into the program.
      */
-    public DictionaryManager() {
+    public DictionaryManager(boolean dev) {
         // Load the dictionary
         this._loadDictonary();
+        this._dev = dev;
     }
 
     /**
@@ -25,8 +27,16 @@ public class DictionaryManager {
      * This overloaded constructor is used to load a custom dictionary.
      * @param {ArrayList} - The array of words to load into the dictionary.
      */
-    public DictionaryManager(ArrayList<String> words) {
+    public DictionaryManager(ArrayList<String> words, boolean dev) {
         this._words = words;
+        this._dev = dev;
+    }
+
+    private void _printDev(String message) {
+        if (this._dev) {
+            System.out.println("[DEV] " + message);
+        }
+
     }
 
     /**
@@ -37,10 +47,12 @@ public class DictionaryManager {
         try {
             File myObj = new File(path);
             Scanner myReader = new Scanner(myObj);
+
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 this._words.add(data);
             }
+
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -54,5 +66,16 @@ public class DictionaryManager {
      */
     public ArrayList<String> getWords() {
         return this._words;
+    }
+
+    /**
+     * isWord is used for checking if the word is valid.
+     * @param word {String} The word to search for.
+     * @return {boolean} True if the word is found, false otherwise.
+     */
+    public boolean isWord(String word) {
+        word = word.toLowerCase();
+        this._printDev("Searching for word: " + word + " in list of " + this._words.size());
+        return this._words.contains(word);
     }
 }
