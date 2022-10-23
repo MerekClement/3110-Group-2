@@ -30,7 +30,7 @@ public class Main {
     // Game setup
     private static int _gameHeight = 24; // <-- Character height
     private static int _gameWidth = 24; // <-- Character wide
-    private static int _playerCount = 0;
+    private static int _playerCount = 2;
     private static boolean _devMode = false;
     private static boolean _generatePlayers = false;
     private static ArrayList<String> _aiNames = new ArrayList<String>();
@@ -142,12 +142,16 @@ public class Main {
         // Setup game
         setup();
 
-        // Just some test data
-        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
-        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
+//        // Just some test data
+//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
+//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
+//
+//        // Initalize and view a test board.
+//        _board.initalizeIndex();
+//        _board.viewBoard();
 
-        // Initalize and view a test board.
-        _board.initalizeIndex();
-        _board.viewBoard();
+        // Launch the game
+        Game game = new Game(_dictionary, _board, _devUtils, _playerManager);
+        game.mainLoop();
     }
 }

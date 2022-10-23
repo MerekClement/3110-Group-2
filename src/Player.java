@@ -13,6 +13,22 @@ public class Player {
         this._moves = 0;
     }
 
+    public void setScore(int points){
+        this._points = this._points + points;
+    }
+
+    public int getScore() {
+        return this._points;
+    }
+
+    public void setMove(){
+        this._moves++;
+    }
+
+    public int getMoves(){
+        return this._moves;
+    }
+
     public int get_id() {
         return this._id;
     }

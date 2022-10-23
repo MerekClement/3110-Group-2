@@ -24,6 +24,10 @@ public class Utils {
         return names;
     }
 
+    public boolean isDev(){
+        return this._dev;
+    }
+
     /**
      * The following method is to print a dev message
      * @param message {String} - The message to print
