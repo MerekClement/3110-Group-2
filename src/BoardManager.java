@@ -20,4 +20,41 @@ public class BoardManager {
         this._width = width;
         this._slots = new String[this._width][this._height];
     }
+
+    /**
+     * The following will build a box with random indexes
+     */
+    public void initalizeIndex(){
+        for (int i = 0; i < this._width; i++) {
+            for (int j = 0; j < this._height; j++) {
+                this._slots[i][j] = String.valueOf(i+j);
+            }
+        }
+    }
+
+    /**
+     * The following will print the current board
+     */
+    public void viewBoard() {
+        for (int i = 0; i < this._width; i++) {
+            if (i == 0){
+                for (int k = 1; k <= this._width; k++) {
+                    if (k == 1){
+                        System.out.print("\t");
+                    }
+                    System.out.print("\t" + k);
+                }
+                System.out.print("\n\n\n");
+            }
+            for (int j = 0; j < this._height; j++) {
+                if (j == 0){
+                    System.out.print(i + 1 + "\t");
+                }
+                System.out.print("\t" + this._slots[i][j]);
+                if (j + 1 == this._height){
+                    System.out.print("\n");
+                }
+            }
+        }
+    }
 }

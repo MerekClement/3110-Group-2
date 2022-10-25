@@ -1,10 +1,31 @@
 package Developer;
 
+import java.util.ArrayList;
+
 public class Utils {
     private boolean _dev = false;
 
     public Utils(boolean devMode) {
         this._dev = devMode;
+    }
+
+    public static ArrayList<String> makeList(){
+        ArrayList<String> names = new ArrayList<String>();
+        names.add("John");
+        names.add("Jim");
+        names.add("Bob");
+        names.add("Austin");
+        names.add("Joe");
+        names.add("Alex");
+        names.add("Linus");
+        names.add("Tom");
+        names.add("Derek");
+        names.add("Chris");
+        return names;
+    }
+
+    public boolean isDev(){
+        return this._dev;
     }
 
     /**

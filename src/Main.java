@@ -30,8 +30,10 @@ public class Main {
     // Game setup
     private static int _gameHeight = 24; // <-- Character height
     private static int _gameWidth = 24; // <-- Character wide
-    private static int _playerCount = 0;
+    private static int _playerCount = 2;
     private static boolean _devMode = false;
+    private static boolean _generatePlayers = false;
+    private static ArrayList<String> _aiNames = new ArrayList<String>();
 
     /**
      * The following setup method is used to setup a game instance
@@ -75,8 +77,19 @@ public class Main {
         while (_playerCount > created){
             try {
                 System.out.println("Please input a name for Player " + (created + 1));
-                String name = reader.readLine();
-                players.add(new Player(name));
+                if (_generatePlayers){
+                    if (created == 0){
+                        _aiNames = Utils.makeList();
+                    } else if (created >= 10) {
+                        throw new UnsupportedOperationException("Cannot pre seed more than 10.");
+                    }
+                    String name = _aiNames.get(created);
+                    System.out.println(name);
+                    players.add(new Player(name));
+                } else {
+                    String name = reader.readLine();
+                    players.add(new Player(name));
+                }
                 created++;
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -120,14 +133,25 @@ public class Main {
                     args[i] = args[i].replace("-players=", "");
                     _playerCount = Integer.parseInt(args[i]);
                 }
+                if (args[i].toString().contains("-generatePlayers")) {
+                    _generatePlayers = true;
+                }
             }
         }
 
         // Setup game
         setup();
 
-        // Just some test data
-        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
-        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
+//        // Just some test data
+//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
+//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
+//
+//        // Initalize and view a test board.
+//        _board.initalizeIndex();
+//        _board.viewBoard();
+
+        // Launch the game
+        Game game = new Game(_dictionary, _board, _devUtils, _playerManager);
+        game.mainLoop();
     }
 }
