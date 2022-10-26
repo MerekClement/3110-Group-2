@@ -105,7 +105,7 @@ public class Main {
      * @return
      */
     private static boolean testSetup() {
-        // TODO: Stubbed for now until testing.
+        // TODO: Stubbed for now until testing phase in later iterations.
         return true;
     }
 
@@ -141,14 +141,6 @@ public class Main {
 
         // Setup game
         setup();
-
-//        // Just some test data
-//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEstg")));
-//        _devUtils.printDev(String.valueOf(_dictionary.isWord("tEst")));
-//
-//        // Initalize and view a test board.
-//        _board.initalizeIndex();
-//        _board.viewBoard();
 
         // Launch the game
         Game game = new Game(_dictionary, _board, _devUtils, _playerManager);
