@@ -1,10 +1,12 @@
 import Developer.Utils;
 
+import java.util.Random;
+
 public class BoardManager {
     private Utils _dev;
     private String[][] _slots;
-    private int _width;
-    private int _height;
+    public int _width;
+    public int _height;
 
     public BoardManager(Utils _devMode) {
         this._dev = _devMode;
@@ -130,5 +132,10 @@ public class BoardManager {
                 this._slots[top][left + i] = word.substring(i, i + 1);
             }
         }
+    }
+
+    public char getRandomAlphabets() {
+        Random rnd = new Random();
+        return (char) ('A' + rnd.nextInt(26));
     }
 }
