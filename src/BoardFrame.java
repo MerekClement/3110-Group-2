@@ -11,7 +11,8 @@ public class BoardFrame extends JFrame implements BoardView {
 
     BoardManager boardManager = new BoardManager(new Utils(false));
     private JPanel bagOfPlayer1, bagOfPlayer2, boardPanel;
-
+    private JLabel scoreTextLabel1, scoreTextLabel2;
+    private JLabel player1score, player2score;
     private JButton[] alphabetButtonsPlayer1, alphabetButtonsPlayer2;
 
     public BoardFrame(){
@@ -21,16 +22,32 @@ public class BoardFrame extends JFrame implements BoardView {
         GridBagConstraints c = new GridBagConstraints();
         setLayout(gb);
 
-        bagOfPlayer1 = new JPanel(new GridLayout(10,1));
+        bagOfPlayer1 = new JPanel(new GridLayout(12,3,10,10));
+        bagOfPlayer1.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         boardPanel  = new JPanel(new GridLayout(16,16,3,3));
-        bagOfPlayer2 = new JPanel(new GridLayout(10,1));
+        boardPanel.setBorder(BorderFactory.createEtchedBorder());
+        bagOfPlayer2 = new JPanel(new GridLayout(12,3,10,10));
+        bagOfPlayer2.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-        bagOfPlayer1.add(new JLabel("Player 1",SwingConstants.CENTER));
-        bagOfPlayer2.add(new JLabel("Player 2",SwingConstants.CENTER));
+        JLabel player1 = new JLabel("Player 1",SwingConstants.CENTER);
+        JLabel player2 = new JLabel("Player 2",SwingConstants.CENTER);
+        player1.setBorder(BorderFactory.createEtchedBorder());
+        player2.setBorder(BorderFactory.createEtchedBorder());
+        bagOfPlayer1.add(player1);
+        bagOfPlayer2.add(player2);
 
         alphabetButtonsPlayer1 = new JButton[7];
         alphabetButtonsPlayer2 = new JButton[7];
 
+        scoreTextLabel1 = new JLabel("SCORE",SwingConstants.CENTER);
+        bagOfPlayer1.add(scoreTextLabel1);
+        scoreTextLabel2 = new JLabel("SCORE",SwingConstants.CENTER);
+        bagOfPlayer2.add(scoreTextLabel2);
+
+        player1score = new JLabel("0", SwingConstants.CENTER);
+        player2score = new JLabel("0",SwingConstants.CENTER);
+        bagOfPlayer1.add(player1score);
+        bagOfPlayer2.add(player2score);
 
         char a = 'a';
 
@@ -81,10 +98,11 @@ public class BoardFrame extends JFrame implements BoardView {
         clearPlayer1.addActionListener(boardController);
 
         JLabel label = new JLabel("S C R A B B L E");
+        label.setFont(new Font("Copperplate Gothic Bold", Font.ROMAN_BASELINE, 50));
 
-        c.ipadx = 50;
-        c.ipady = 50;
-        c.fill = GridBagConstraints.CENTER;
+        c.ipadx = 10;
+        c.ipady = 10;
+        c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 3;
