@@ -4,8 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardFrame extends JFrame implements BoardView {
-    private JButton[][] cells = new JButton[10][10];
-
+    private JButton[][] cells = new JButton[15][15];
     private BoardController boardController;
 
     private BoardManager boardManager = new BoardManager(new Utils(false));
@@ -21,7 +20,7 @@ public class BoardFrame extends JFrame implements BoardView {
         setLayout(gb);
 
         bagOfPlayer1 = new JPanel(new GridLayout(8,1));
-        boardPanel  = new JPanel(new GridLayout(10,10,3,3));
+        boardPanel  = new JPanel(new GridLayout(16,16,3,3));
         bagOfPlayer2 = new JPanel(new GridLayout(8,1));
 
         bagOfPlayer1.add(new JLabel("Player 1"));
@@ -30,27 +29,48 @@ public class BoardFrame extends JFrame implements BoardView {
         alphabetButtonsPlayer1 = new JButton[7];
         alphabetButtonsPlayer2 = new JButton[7];
 
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                cells[i][j] = new JButton(i + " " + j);
-                cells[i][j].addActionListener(boardController);
-                boardPanel.add(cells[i][j]);
+
+        char a = 'a';
+
+        for(int i = 0; i < 16; i++){
+            if(i>0) {
+                boardPanel.add(new JLabel((char) (a + i - 1) + ""));
+            }else{
+                boardPanel.add(new JLabel("R/C"));
+            }
+            for(int j = 1; j < 16; j++){
+                if(i == 0){
+                    boardPanel.add(new JLabel((char)(a+j-1) + ""));
+                    continue;
+                }
+                cells[i-1][j-1] = new JButton(" ");
+                cells[i-1][j-1].setActionCommand(i +""+ j);
+                cells[i-1][j-1].addActionListener(boardController);
+                boardPanel.add(cells[i-1][j-1]);
             }
         }
-
+        String player1Alphabet, player2Alphabet;
         for(int i = 0; i < 7; i++){
-            alphabetButtonsPlayer1[i] = new JButton(""+boardManager.getRandomAlphabets());
+            player1Alphabet = ""+boardManager.getRandomAlphabets();
+            player2Alphabet = ""+boardManager.getRandomAlphabets();
+
+            alphabetButtonsPlayer1[i] = new JButton(player1Alphabet);
             bagOfPlayer1.add(alphabetButtonsPlayer1[i]);
-            alphabetButtonsPlayer2[i] = new JButton(""+boardManager.getRandomAlphabets());
+            alphabetButtonsPlayer1[i].addActionListener(boardController);
+            alphabetButtonsPlayer1[i].setActionCommand(player1Alphabet);
+
+            alphabetButtonsPlayer2[i] = new JButton(player2Alphabet);
             bagOfPlayer2.add(alphabetButtonsPlayer2[i]);
+            alphabetButtonsPlayer2[i].addActionListener(boardController);
+            alphabetButtonsPlayer2[i].setActionCommand(player2Alphabet);
         }
 
 
 
         JLabel label = new JLabel("S C R A B B L E");
 
-        c.ipadx = 10;
-        c.ipady = 10;
+        c.ipadx = 50;
+        c.ipady = 50;
         c.fill = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
@@ -75,7 +95,7 @@ public class BoardFrame extends JFrame implements BoardView {
         c.gridheight = 1;
         add(bagOfPlayer2, c);
 
-        setSize(new Dimension(800,400));
+        setSize(new Dimension(950,630));
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
