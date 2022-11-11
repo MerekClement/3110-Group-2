@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardFrame extends JFrame implements BoardView {
-    private JButton[][] cells = new JButton[15][15];
+    private JButton[][] cells = new ScrabbleCellButton[15][15];
 
     private JButton passPlayer1btn, passPlayer2btn, clearPlayer1, clearPlayer2;
     private BoardController boardController;
@@ -62,7 +62,7 @@ public class BoardFrame extends JFrame implements BoardView {
                     boardPanel.add(new JLabel((char)(a+j-1) + "",SwingConstants.CENTER));
                     continue;
                 }
-                cells[i-1][j-1] = new JButton(" ");
+                cells[i-1][j-1] = new ScrabbleCellButton(" ", i-1,j-1);
                 cells[i-1][j-1].setActionCommand(i +""+ j);
                 cells[i-1][j-1].addActionListener(boardController);
                 boardPanel.add(cells[i-1][j-1], CENTER_ALIGNMENT);
