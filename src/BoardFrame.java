@@ -2,9 +2,11 @@ import Developer.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class BoardFrame extends JFrame implements BoardView {
-    private JButton[][] cells = new ScrabbleCellButton[15][15];
+    private BagController bagController;
+    protected ScrabbleCellButton[][] cells = new ScrabbleCellButton[15][15];
 
     private JButton passPlayer1btn, passPlayer2btn, clearPlayer1, clearPlayer2;
     private BoardController boardController;
@@ -13,10 +15,14 @@ public class BoardFrame extends JFrame implements BoardView {
     private JPanel bagOfPlayer1, bagOfPlayer2, boardPanel;
     private JLabel scoreTextLabel1, scoreTextLabel2;
     private JLabel player1score, player2score;
-    private JButton[] alphabetButtonsPlayer1, alphabetButtonsPlayer2;
+    JButton[] alphabetButtonsPlayer1, alphabetButtonsPlayer2;
+
+    String currentSelectedCharacter;
+    Boolean isTurnFirst = true, isPlayer1 = true;
 
     public BoardFrame(){
         boardController = new BoardController(this);
+        bagController = new BagController(this);
 
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -62,9 +68,13 @@ public class BoardFrame extends JFrame implements BoardView {
                     boardPanel.add(new JLabel((char)(a+j-1) + "",SwingConstants.CENTER));
                     continue;
                 }
-                cells[i-1][j-1] = new ScrabbleCellButton(" ", i-1,j-1);
-                cells[i-1][j-1].setActionCommand(i +""+ j);
+                cells[i-1][j-1] = new ScrabbleCellButton("", i-1,j-1);
+                cells[i-1][j-1].setActionCommand(i +" "+ j);
                 cells[i-1][j-1].addActionListener(boardController);
+                cells[i-1][j-1].setEnabled(false);
+                if(i == 8 && j == 8){
+                    cells[i-1][j-1].setEnabled(true);
+                }
                 boardPanel.add(cells[i-1][j-1], CENTER_ALIGNMENT);
             }
         }
@@ -75,13 +85,13 @@ public class BoardFrame extends JFrame implements BoardView {
 
             alphabetButtonsPlayer1[i] = new JButton(player1Alphabet);
             bagOfPlayer1.add(alphabetButtonsPlayer1[i]);
-            alphabetButtonsPlayer1[i].addActionListener(boardController);
-            alphabetButtonsPlayer1[i].setActionCommand(player1Alphabet);
+            alphabetButtonsPlayer1[i].addActionListener(bagController);
+            alphabetButtonsPlayer1[i].setActionCommand(1+","+i+","+player1Alphabet);
 
             alphabetButtonsPlayer2[i] = new JButton(player2Alphabet);
             bagOfPlayer2.add(alphabetButtonsPlayer2[i]);
-            alphabetButtonsPlayer2[i].addActionListener(boardController);
-            alphabetButtonsPlayer2[i].setActionCommand(player2Alphabet);
+            alphabetButtonsPlayer2[i].addActionListener(bagController);
+            alphabetButtonsPlayer2[i].setActionCommand(2+","+i+","+player2Alphabet);
         }
 
         passPlayer1btn = new JButton("Pass");
@@ -92,10 +102,15 @@ public class BoardFrame extends JFrame implements BoardView {
         bagOfPlayer2.add(passPlayer2btn);
         bagOfPlayer1.add(clearPlayer1);
         bagOfPlayer2.add(clearPlayer2);
-        passPlayer1btn.addActionListener(boardController);
-        passPlayer2btn.addActionListener(boardController);
-        clearPlayer2.addActionListener(boardController);
-        clearPlayer1.addActionListener(boardController);
+        passPlayer1btn.addActionListener(bagController);
+        passPlayer2btn.addActionListener(bagController);
+        clearPlayer2.addActionListener(bagController);
+        clearPlayer1.addActionListener(bagController);
+        passPlayer1btn.setActionCommand(1+","+"pass");
+        passPlayer2btn.setActionCommand(2+","+"pass");
+        clearPlayer2.setActionCommand(1+","+"clear");
+        clearPlayer1.setActionCommand(2+","+"clear");
+
 
         JLabel label = new JLabel("S C R A B B L E");
         label.setFont(new Font("Copperplate Gothic Bold", Font.ROMAN_BASELINE, 50));

@@ -20,4 +20,5 @@ public class ScrabbleCellButton extends JButton {
         coordinates[3] = this.left;
         return coordinates;
     }
+
 }
