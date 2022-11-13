@@ -2,17 +2,19 @@ import Developer.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BoardFrame extends JFrame implements BoardView {
-    private BagController bagController;
+    BagController bagController;
+
+    JButton submitButtonPlayer1, submitButtonPlayer2;
     protected ScrabbleCellButton[][] cells = new ScrabbleCellButton[15][15];
 
     private JButton passPlayer1btn, passPlayer2btn, clearPlayer1, clearPlayer2;
-    private BoardController boardController;
+    BoardController boardController;
 
     BoardManager boardManager = new BoardManager(new Utils(false));
-    private JPanel bagOfPlayer1, bagOfPlayer2, boardPanel;
+    JPanel bagOfPlayer1, bagOfPlayer2, boardPanel;
     private JLabel scoreTextLabel1, scoreTextLabel2;
     private JLabel player1score, player2score;
     JButton[] alphabetButtonsPlayer1, alphabetButtonsPlayer2;
@@ -24,15 +26,16 @@ public class BoardFrame extends JFrame implements BoardView {
         boardController = new BoardController(this);
         bagController = new BagController(this);
 
+
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         setLayout(gb);
 
-        bagOfPlayer1 = new JPanel(new GridLayout(12,3,10,10));
+        bagOfPlayer1 = new JPanel(new GridLayout(13,3,10,10));
         bagOfPlayer1.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         boardPanel  = new JPanel(new GridLayout(16,16,3,3));
         boardPanel.setBorder(BorderFactory.createEtchedBorder());
-        bagOfPlayer2 = new JPanel(new GridLayout(12,3,10,10));
+        bagOfPlayer2 = new JPanel(new GridLayout(13,3,10,10));
         bagOfPlayer2.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         JLabel player1 = new JLabel("Player 1",SwingConstants.CENTER);
@@ -98,19 +101,28 @@ public class BoardFrame extends JFrame implements BoardView {
         passPlayer2btn = new JButton("Pass");
         clearPlayer1 = new JButton("Clear");
         clearPlayer2 = new JButton("Clear");
-        bagOfPlayer1.add(passPlayer1btn);
+        submitButtonPlayer1 = new JButton("SUBMIT");
+        submitButtonPlayer2 = new JButton("SUBMIT");
         bagOfPlayer2.add(passPlayer2btn);
         bagOfPlayer1.add(clearPlayer1);
         bagOfPlayer2.add(clearPlayer2);
+        bagOfPlayer1.add(passPlayer1btn);
+        bagOfPlayer1.add(submitButtonPlayer1);
+        bagOfPlayer2.add(submitButtonPlayer2);
+        submitButtonPlayer2.addActionListener(bagController);
+        submitButtonPlayer1.addActionListener(bagController);
         passPlayer1btn.addActionListener(bagController);
         passPlayer2btn.addActionListener(bagController);
         clearPlayer2.addActionListener(bagController);
         clearPlayer1.addActionListener(bagController);
+        submitButtonPlayer1.addActionListener(bagController);
+        submitButtonPlayer2.addActionListener(bagController);
         passPlayer1btn.setActionCommand(1+","+"pass");
         passPlayer2btn.setActionCommand(2+","+"pass");
         clearPlayer2.setActionCommand(1+","+"clear");
         clearPlayer1.setActionCommand(2+","+"clear");
-
+        submitButtonPlayer1.setActionCommand(1+","+"submit");
+        submitButtonPlayer2.setActionCommand(2+","+"submit");
 
         JLabel label = new JLabel("S C R A B B L E");
         label.setFont(new Font("Copperplate Gothic Bold", Font.ROMAN_BASELINE, 50));
@@ -141,6 +153,7 @@ public class BoardFrame extends JFrame implements BoardView {
         c.gridheight = 1;
         add(bagOfPlayer2, c);
 
+        bagController.pass();
         setSize(new Dimension(975,630));
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

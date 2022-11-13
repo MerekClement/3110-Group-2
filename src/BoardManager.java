@@ -8,6 +8,8 @@ public class BoardManager {
     public int _width;
     public int _height;
 
+    DictionaryManager dictionaryManager;
+
     public BoardManager(Utils _devMode) {
         this._dev = _devMode;
     }
@@ -21,6 +23,7 @@ public class BoardManager {
         this._height = height;
         this._width = width;
         this._slots = new String[this._width][this._height];
+        dictionaryManager = new DictionaryManager(new Utils(false));
     }
 
     /**
