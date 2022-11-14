@@ -72,6 +72,7 @@ public class BoardController implements ActionListener {
             }
             frame.cells[i - 1][j - 1].setText(frame.currentSelectedCharacter);
             characterStack.add(self);
+
             activeButtonsForThisMove.add(self);
             Coordinates coordinates[] = frame.cells[i - 1][j - 1].getAdjacentCells();
             Coordinates top = coordinates[0];

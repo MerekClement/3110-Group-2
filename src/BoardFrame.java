@@ -22,6 +22,7 @@ public class BoardFrame extends JFrame implements BoardView {
     String currentSelectedCharacter;
     int currentTurn = 1;
 
+
     public BoardFrame(){
         boardController = new BoardController(this);
         bagController = new BagController(this);

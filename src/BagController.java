@@ -129,6 +129,7 @@ public class BagController implements ActionListener {
             System.out.println("Word passed");
             boardController.updateCorrectWords();
             pass();
+
         }else{
             JOptionPane.showMessageDialog(frame, "Invalid Word", "Select a word that makes a sense", JOptionPane.ERROR_MESSAGE);
             clear();
