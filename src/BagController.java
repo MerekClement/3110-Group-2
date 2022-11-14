@@ -125,27 +125,29 @@ public class BagController implements ActionListener {
      * after a successful try.
      */
     private void updateSurroundingNodes() {
-        ArrayList<Coordinates> characterStack = boardController.getCharacterStack();
-        for(Coordinates c : characterStack){
-            int x = c.getX();
-            int y = c.getY();
-            if(x-1 >= 0){
-                boardController.frame.cells[x-1][y].setEnabled(true);
-            }
-            if(x+1 < 15){
-                boardController.frame.cells[x+1][y].setEnabled(true);
-            }
-            if(y-1 >= 0){
-                boardController.frame.cells[x][y - 1].setEnabled(true);
-            }
-            if(y+1 < 15){
-                boardController.frame.cells[x][y + 1].setEnabled(true);
+        for (int x = 1; x < 15; x++) {
+            for (int y = 1; y < 15; y++) {
+                if (boardController.frame.cells[x][y].getText() != "") {
+                    if (boardController.frame.cells[x - 1][y].getText() == "") {
+                        boardController.frame.cells[x - 1][y].setEnabled(true);
+                    }
+                    if (boardController.frame.cells[x + 1][y].getText() == "") {
+                        boardController.frame.cells[x + 1][y].setEnabled(true);
+                    }
+                    if (boardController.frame.cells[x][y - 1].getText() == "") {
+                        boardController.frame.cells[x][y - 1].setEnabled(true);
+                    }
+                    if (boardController.frame.cells[x][y + 1].getText() == "") {
+                        boardController.frame.cells[x][y + 1].setEnabled(true);
+                    }
+                }
             }
         }
     }
 
     private void submit() {
         System.out.println(move);
+
         if(move.equals("")){
             JOptionPane.showMessageDialog(frame,"No word selected","Select a word",JOptionPane.ERROR_MESSAGE);
         }else if(manager.dictionaryManager.isWord(move)) {
