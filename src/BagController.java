@@ -53,42 +53,32 @@ public class BagController implements ActionListener {
         return move + this.move;
     }
     public void pass(){
-        System.out.println("Now in pass");
         for(JButton b : alphabetStack){
             char ch = manager.getRandomAlphabets();
             if(b.getText() == ""+ch){
                 ch++;
             }
             b.setText(ch+"");
-            String currentActionCommand = b.getActionCommand();
-            String player = currentActionCommand.split(",")[0];
-            String buttonNumber = currentActionCommand.split(",")[1];
-            b.setActionCommand(player+","+buttonNumber+","+ch);
             b.setEnabled(false);
         }
-        if(frame.currentTurn == 1){
-            for(Component c : frame.bagOfPlayer1.getComponents()){
+        if(frame.isPlayer1){
+            for(Component c : frame.bagOfPlayer2.getComponents()){
                 c.setEnabled(false);
             }
-            for(Component c : frame.bagOfPlayer2.getComponents()){
+            for(Component c : frame.bagOfPlayer1.getComponents()){
                 c.setEnabled(true);
             }
-            System.out.println("Passed to player 2");
-            frame.currentTurn --;
+            frame.isPlayer1 = false;
         }else{
-            for(Component c : frame.bagOfPlayer2.getComponents()){
+            for(Component c : frame.bagOfPlayer1.getComponents()){
                 c.setEnabled(false);
             }
-            for(Component c : frame.bagOfPlayer1.getComponents()){
+            for(Component c : frame.bagOfPlayer2.getComponents()){
                 c.setEnabled(true);
             }
-            System.out.println("Passed to player 1");
-            frame.currentTurn++;
+            frame.isPlayer1 = true;
         }
-        alphabetStack.clear();
-        System.out.println("Stack Cleared");
-        this.move = "";
-        System.out.println(frame.currentTurn + " turn");
+
     }
 
     @Override
@@ -120,6 +110,30 @@ public class BagController implements ActionListener {
 
     }
 
+    /**
+     * updateSurroundingNodes is responsible for enabling nodes surrounding a letter
+     * after a successful try.
+     */
+    private void updateSurroundingNodes() {
+        ArrayList<Coordinates> characterStack = boardController.getCharacterStack();
+        for(Coordinates c : characterStack){
+            int x = c.getX();
+            int y = c.getY();
+            if(x-1 >= 0){
+                boardController.frame.cells[x-1][y].setEnabled(true);
+            }
+            if(x+1 < 15){
+                boardController.frame.cells[x+1][y].setEnabled(true);
+            }
+            if(y-1 >= 0){
+                boardController.frame.cells[x][y - 1].setEnabled(true);
+            }
+            if(y+1 < 15){
+                boardController.frame.cells[x][y + 1].setEnabled(true);
+            }
+        }
+    }
+
     private void submit() {
         System.out.println(move);
         if(move.equals("")){
@@ -127,9 +141,8 @@ public class BagController implements ActionListener {
         }else if(manager.dictionaryManager.isWord(move)) {
             manager.validateMove(getMove());
             System.out.println("Word passed");
-            boardController.updateCorrectWords();
+            updateSurroundingNodes();
             pass();
-
         }else{
             JOptionPane.showMessageDialog(frame, "Invalid Word", "Select a word that makes a sense", JOptionPane.ERROR_MESSAGE);
             clear();
