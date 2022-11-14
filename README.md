@@ -28,5 +28,17 @@ The Game class is responsible for initializing objects of the “BoardManager”
 Main.java: 
 The Main class is used to setup an instance of Game which also sets up the Board Manager, Dictionary Manager and the player manager with the requested players.
 
+BagController
+The base controller for the specific player bag
 
+BoardController
+The base controller for the board manager
 
+BoardFrame
+The view for the board
+
+BoardView
+Interface for the board view
+
+ScrabbleCellButton
+The buttons that the player will use to interact with the board
