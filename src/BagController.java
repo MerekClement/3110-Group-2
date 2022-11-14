@@ -110,6 +110,30 @@ public class BagController implements ActionListener {
 
     }
 
+    /**
+     * updateSurroundingNodes is responsible for enabling nodes surrounding a letter
+     * after a successful try.
+     */
+    private void updateSurroundingNodes() {
+        ArrayList<Coordinates> characterStack = boardController.getCharacterStack();
+        for(Coordinates c : characterStack){
+            int x = c.getX();
+            int y = c.getY();
+            if(x-1 >= 0){
+                boardController.frame.cells[x-1][y].setEnabled(true);
+            }
+            if(x+1 < 15){
+                boardController.frame.cells[x+1][y].setEnabled(true);
+            }
+            if(y-1 >= 0){
+                boardController.frame.cells[x][y - 1].setEnabled(true);
+            }
+            if(y+1 < 15){
+                boardController.frame.cells[x][y + 1].setEnabled(true);
+            }
+        }
+    }
+
     private void submit() {
         System.out.println(move);
         if(move.equals("")){
@@ -117,6 +141,7 @@ public class BagController implements ActionListener {
         }else if(manager.dictionaryManager.isWord(move)) {
             manager.validateMove(getMove());
             System.out.println("Word passed");
+            updateSurroundingNodes();
             pass();
         }else{
             JOptionPane.showMessageDialog(frame, "Invalid Word", "Select a word that makes a sense", JOptionPane.ERROR_MESSAGE);
