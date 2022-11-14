@@ -1,11 +1,13 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoardController implements ActionListener {
     BoardFrame frame;
     BoardManager manager;
-
+    static HashMap<ScrabbleCellButton, String> correctWordCollector = new HashMap<>();
     String word = "";
     ArrayList<Coordinates> characterStack;
 
@@ -38,6 +40,10 @@ public class BoardController implements ActionListener {
                 frame.cells[c.getX()][c.getY()].setEnabled(true);
             }
         }
+        for(ScrabbleCellButton cellButton: correctWordCollector.keySet()){
+            cellButton.setEnabled(true);
+            cellButton.setText(correctWordCollector.get(cellButton));
+        }
         activeButtonsForThisMove.clear();
         characterStack.clear();
     }
@@ -49,13 +55,21 @@ public class BoardController implements ActionListener {
         frame.cells[c.getX()][c.getY()].setEnabled(true);
         activeButtonsForThisMove.add(c);
     }
-
+    public void updateCorrectWords(){
+        for (Coordinates c: characterStack){
+            correctWordCollector.put(frame.cells[c.getX()][c.getY()], frame.cells[c.getX()][c.getY()].getText());
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         int i = Integer.parseInt(e.getActionCommand().split(" ")[0]);
         int j = Integer.parseInt(e.getActionCommand().split(" ")[1]);
         Coordinates self = new Coordinates(i-1,j-1);
         if (i < 15 && j < 15) {
+            if(correctWordCollector.containsKey(frame.cells[i - 1][j - 1])){
+                JOptionPane.showMessageDialog(frame,"Cannot put a character on already put character", "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             frame.cells[i - 1][j - 1].setText(frame.currentSelectedCharacter);
             characterStack.add(self);
             activeButtonsForThisMove.add(self);

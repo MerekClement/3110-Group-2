@@ -20,7 +20,7 @@ public class BoardFrame extends JFrame implements BoardView {
     JButton[] alphabetButtonsPlayer1, alphabetButtonsPlayer2;
 
     String currentSelectedCharacter;
-    Boolean isTurnFirst = true, isPlayer1 = true;
+    int currentTurn = 1;
 
     public BoardFrame(){
         boardController = new BoardController(this);
@@ -153,7 +153,6 @@ public class BoardFrame extends JFrame implements BoardView {
         c.gridheight = 1;
         add(bagOfPlayer2, c);
 
-        bagController.pass();
         setSize(new Dimension(975,630));
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
