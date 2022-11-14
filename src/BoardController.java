@@ -79,23 +79,11 @@ public class BoardController implements ActionListener {
             Coordinates down = coordinates[2];
             Coordinates left = coordinates[3];
 
-            if (characterStack.size() == 1) {
                 setEnableTrue(top);
                 setEnableTrue(right);
                 setEnableTrue(down);
                 setEnableTrue(left);
-            }else{
-                Coordinates character_0 = characterStack.get(0);
-                Coordinates character_1 = characterStack.get(1);
-                if(character_0.getY() - character_1.getY() == 0){
-                    setEnableTrue(left);
-                    setEnableTrue(right);
-                }
-                if(character_0.getX() - character_1.getX() == 0){
-                    setEnableTrue(top);
-                    setEnableTrue(down);
-                }
-            }
+
         }
     }
 }

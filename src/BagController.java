@@ -43,12 +43,22 @@ public class BagController implements ActionListener {
             }
         }
         move += "["+wordStart.getX()+","+wordStart.getY();
+        String word = "";
         if(wordStart.getX() - wordEnd.getX() == 0){
+            for(int i = wordStart.getX(); i == wordStart.getX(); i++){
+                word+=frame.cells[i][wordStart.getY()].getText();
+            }
+            this.move = word;
             move += ",down]";
         }
         if(wordStart.getY() - wordEnd.getY() == 0){
+            for(int i = wordStart.getY() ; i ==wordStart.getY(); i++){
+                word+=frame.cells[wordStart.getX()][wordStart.getY()+i].getText();
+            System.out.println(word + " is word");
+            }
             move += ",left]";
         }
+
         System.out.println(move+this.move);
         return move + this.move;
     }
